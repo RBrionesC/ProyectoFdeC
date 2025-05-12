@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/page_home">
+
+    <fragment
+        android:id="@id/page_home"
+        android:name="com.example.dogpedia.HomeFragment"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@id/page_profile"
+        android:name="com.example.dogpedia.ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+    <fragment
+        android:id="@id/page_calendar"
+        android:name="com.example.dogpedia.CalendarFragment"
+        tools:layout="@layout/fragment_calendar"/>
+</navigation>

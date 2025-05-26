@@ -16,11 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
-from api import endpoints
+from api import endpoints, endpoint_upload_image, endpoints_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', endpoints.register),
     path('sessions/', endpoints.login),
+    path('users/upload_avatar/', endpoint_upload_image.upload_avatar),
+    path('users/profile/', endpoints_profile.profile),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

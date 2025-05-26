@@ -155,6 +155,8 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("SAVE TOKEN","saveToken: "+ requestBody.toString());
         edit.putString("SessionToken", requestBody.getString("token"));
         edit.putString("NAME", requestBody.getString("name"));
+        edit.putString("EMAIL", requestBody.getString("email"));
+
         edit.apply();
     }
 

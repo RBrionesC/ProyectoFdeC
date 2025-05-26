@@ -54,7 +54,7 @@ def login(request):
         try:
             body_json = json.loads(request.body)
         except json.JSONDecodeError as e:
-            return JsonResponse({"error": f"JSON mal formado: {str(e)}"}, status=400)
+            return JsonResponse({"error": f"Malformed JSON: {str(e)}"}, status=400)
 
         json_email = body_json.get('email', None)
         json_password = body_json.get('password', None)
@@ -80,7 +80,7 @@ def login(request):
             random_token = secrets.token_hex(10)
             session = Session(user=user_object, token=random_token)
             session.save()
-            return JsonResponse({"token": random_token, "name": user_object.name},
+            return JsonResponse({"token": random_token, "name": user_object.name, "email": user_object.username },
                                 status=201)
         else:
             return JsonResponse({"error": "Not valid password"}, status=401)

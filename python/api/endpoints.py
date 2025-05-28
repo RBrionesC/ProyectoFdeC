@@ -1,13 +1,14 @@
-
 import json
 import secrets
 import bcrypt
 from django.db import IntegrityError
-from api.models import User, Session
+from api.models import User, Session, VetEvent
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 SESSION_TOKEN_HEADER = 'SessionToken'
+
+
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -80,7 +81,7 @@ def login(request):
             random_token = secrets.token_hex(10)
             session = Session(user=user_object, token=random_token)
             session.save()
-            return JsonResponse({"token": random_token, "name": user_object.name, "email": user_object.username },
+            return JsonResponse({"token": random_token, "name": user_object.name, "email": user_object.username},
                                 status=201)
         else:
             return JsonResponse({"error": "Not valid password"}, status=401)
@@ -99,3 +100,63 @@ def login(request):
         return JsonResponse({"status": "logged out"}, status=200)
     else:
         return JsonResponse({'error': 'Unsupported HTTP method'}, status=405)
+
+
+@csrf_exempt
+def vet_events(request):
+    session_token = request.headers.get('SessionToken')
+    if not session_token:
+        return JsonResponse({'error': 'Falta token en header'}, status=403)
+
+    try:
+        session = Session.objects.get(token=session_token)
+    except Session.DoesNotExist:
+        return JsonResponse({'error': 'Token inválido'}, status=403)
+
+    user = session.user
+
+    if request.method == 'GET':
+        date_filter = request.GET.get('date')
+        if date_filter:
+            events = VetEvent.objects.filter(user=user, date=date_filter)
+        else:
+            events = VetEvent.objects.filter(user=user)
+
+        return JsonResponse([
+            {
+                'title': e.title,
+                'description': e.description,
+                'date': e.date.isoformat(),
+                'type': e.type
+            } for e in events
+        ], safe=False)
+
+    elif request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            event_type = data.get('type')
+            event_date = data.get('date')
+            description = data.get('description', '')
+
+            if event_type not in dict(VetEvent.EVENT_TYPES):
+                return JsonResponse({'error': f'Tipo de evento inválido: {event_type}'}, status=400)
+
+            if not event_date:
+                return JsonResponse({'error': 'Falta el campo date'}, status=400)
+
+            VetEvent.objects.create(
+                user=user,
+                title=event_type.capitalize(),
+                type=event_type,
+                date=event_date,
+                description=description
+            )
+            return JsonResponse({'message': 'Evento creado correctamente'}, status=201)
+
+        except (json.JSONDecodeError, KeyError) as e:
+            return JsonResponse({'error': f'Error en el cuerpo JSON: {str(e)}'}, status=400)
+
+    else:
+        return JsonResponse({'error': 'Método HTTP no soportado'}, status=405)
+

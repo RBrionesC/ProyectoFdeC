@@ -20,3 +20,19 @@ class Session(models.Model):
 
     def __str__(self):
         return str(self.user) + ' - ' + self.token
+
+class VetEvent(models.Model):
+    EVENT_TYPES = [
+        ('vacunacion', 'Vacunación'),
+        ('desparasitacion', 'Desparasitación'),
+        ('visita', 'Visita al veterinario'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    date = models.DateField()
+    type = models.CharField(max_length=20, choices=EVENT_TYPES)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title} ({self.date})"

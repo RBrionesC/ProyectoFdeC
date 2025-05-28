@@ -27,6 +27,9 @@ urlpatterns = [
     path('sessions/', endpoints.login),
     path('users/upload_avatar/', endpoint_upload_image.upload_avatar),
     path('users/profile/', endpoints_profile.profile),
+    path('vetevent/', endpoints.vet_events),
+
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

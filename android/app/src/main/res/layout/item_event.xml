@@ -1,40 +1,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:padding="12dp"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/eventTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="Título del evento"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/eventType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tipo"
-        android:textSize="14sp"
-        android:textColor="#2B61A7" />
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título del evento"
+            android:textStyle="bold"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/eventDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha"
-        android:textSize="14sp"
-        android:textColor="#666" />
+        <TextView
+            android:id="@+id/eventType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo"
+            android:textSize="14sp"
+            android:textColor="#2B61A7" />
 
-    <TextView
-        android:id="@+id/eventNote"
+        <TextView
+            android:id="@+id/eventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            android:textSize="14sp"
+            android:textColor="#666" />
+
+        <TextView
+            android:id="@+id/eventNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripción"
+            android:textSize="14sp"
+            android:paddingTop="4dp"
+            android:textColor="#444" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descripción"
-        android:textSize="14sp"
-        android:paddingTop="4dp"
-        android:textColor="#444" />
+        android:src="@android:drawable/ic_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Eliminar evento" />
 </LinearLayout>

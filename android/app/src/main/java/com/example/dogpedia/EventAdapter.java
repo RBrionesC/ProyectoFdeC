@@ -1,9 +1,13 @@
 package com.example.dogpedia;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +17,10 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
     private final List<VetEvent> eventList;
+    private OnEventDeleteListener deleteListener;
 
-    public EventAdapter(List<VetEvent> eventList) {
+    public EventAdapter(List<VetEvent> eventList,OnEventDeleteListener deleteListener) {
+        this.deleteListener = deleteListener;
         this.eventList = eventList;
     }
 
@@ -33,11 +39,23 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.dateText.setText(event.getDate());
         holder.typeText.setText(getReadableType(event.getType()));
         holder.noteText.setText(event.getDescription());
+        holder.deleteButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(v.getContext())
+                    .setTitle("Eliminar Evento")
+                    .setMessage("¿Estás seguro de que quieres eliminar este evento?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        deleteListener.onEventDelete(event.getId(), event.getDate());
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
+
     }
 
     private String getReadableType(String type) {
         switch (type) {
-            case "vacunacion":
+            case "vacunación":
                 return "Vacunación";
             case "desparasitacion":
                 return "Desparasitación";
@@ -55,6 +73,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     static class EventViewHolder extends RecyclerView.ViewHolder {
         TextView titleText, dateText, typeText, noteText;
+        ImageButton deleteButton;
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +81,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             dateText = itemView.findViewById(R.id.eventDate);
             typeText = itemView.findViewById(R.id.eventType);
             noteText = itemView.findViewById(R.id.eventNote);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 }

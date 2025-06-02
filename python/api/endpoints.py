@@ -2,6 +2,8 @@ import json
 import secrets
 import bcrypt
 from django.db import IntegrityError
+from django.views.decorators.http import require_http_methods
+
 from api.models import User, Session, VetEvent
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -124,6 +126,7 @@ def vet_events(request):
 
         return JsonResponse([
             {
+                'id': e.id,
                 'title': e.title,
                 'description': e.description,
                 'date': e.date.isoformat(),
@@ -159,4 +162,46 @@ def vet_events(request):
 
     else:
         return JsonResponse({'error': 'Método HTTP no soportado'}, status=405)
+
+
+@csrf_exempt
+def vet_event_dates(request):
+    session_token = request.headers.get('SessionToken')
+    if not session_token:
+        return JsonResponse({'error': 'Falta token en header'}, status=403)
+
+    try:
+        session = Session.objects.get(token=session_token)
+    except Session.DoesNotExist:
+        return JsonResponse({'error': 'Token inválido'}, status=403)
+
+    user = session.user
+
+    if request.method == 'GET':
+        # Obtiene fechas únicas donde el usuario tiene eventos
+        dates = VetEvent.objects.filter(user=user).values_list('date', flat=True).distinct()
+        dates_str = [date.isoformat() for date in dates]
+        return JsonResponse(dates_str, safe=False)
+
+    else:
+        return JsonResponse({'error': 'Método HTTP no soportado'}, status=405)
+
+
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def delete_vet_event(request, event_id):
+    token = request.headers.get('SessionToken')
+    if not token:
+        return JsonResponse({'error': 'Missing token'}, status=401)
+
+    try:
+        session = Session.objects.get(token=token)
+        user = session.user
+        event = VetEvent.objects.get(id=event_id, user=user)
+        event.delete()
+        return JsonResponse({'message': 'Event deleted'}, status=200)
+    except Session.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=403)
+    except VetEvent.DoesNotExist:
+        return JsonResponse({'error': 'Event not found'}, status=404)
 

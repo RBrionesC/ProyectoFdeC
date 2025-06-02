@@ -4,6 +4,7 @@ package com.example.dogpedia;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import org.json.JSONException;
@@ -31,11 +34,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements OnEventDeleteListener {
     private MaterialCalendarView calendarView;
     private RecyclerView eventsRecyclerView;
     private FloatingActionButton addEventButton;
@@ -44,6 +50,13 @@ public class CalendarFragment extends Fragment {
     private String sessionToken;
 
     private static final String URL = "http://10.0.2.2:8000/vetevent/";
+    private static final String DATES_URL = "http://10.0.2.2:8000/vetevent/dates/";
+    private final Set<CalendarDay> markedDates = new HashSet<>();
+
+    @Override
+    public void onEventDelete(int eventId, String date) {
+        deleteEvent(eventId, date);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,43 +67,108 @@ public class CalendarFragment extends Fragment {
         addEventButton = view.findViewById(R.id.AddEvent);
 
         eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        eventAdapter = new EventAdapter(eventList);
+        eventAdapter = new EventAdapter(eventList, this);
         eventsRecyclerView.setAdapter(eventAdapter);
+
+
+        addEventButton.setOnClickListener(v -> showAddEventDialog());
+
+        sessionToken = getSessionToken();
+
+        loadMarkedDates();  // carga fechas marcadas con círculos
+        loadEvents(LocalDate.now().toString());
 
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             LocalDate selectedDate = LocalDate.of(date.getYear(), date.getMonth() + 1, date.getDay());
             loadEvents(selectedDate.toString());
         });
 
-        addEventButton.setOnClickListener(v -> showAddEventDialog());
-
-        sessionToken = getSessionToken();
-        loadEvents(LocalDate.now().toString());
-
         return view;
     }
 
-    private void loadEvents(String date) {
-        eventList.clear();
-        String url = URL + "?date=" + date;
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+    private void loadMarkedDates() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, DATES_URL, null,
                 response -> {
+                    markedDates.clear();
                     for (int i = 0; i < response.length(); i++) {
+                        String dateStr = null;
                         try {
-                            JSONObject obj = response.getJSONObject(i);
-                            String type = obj.getString("type");
-                            String title = type.substring(0,1).toUpperCase() + type.substring(1);
-                            String description = obj.getString("description");
-                            String eventDate = obj.getString("date");
-
-
-                            eventList.add(new VetEvent(title, description, eventDate, type));
+                            dateStr = response.getString(i);
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            throw new RuntimeException(e);
                         }
+                        LocalDate date = LocalDate.parse(dateStr);
+                        CalendarDay day = CalendarDay.from(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+                        markedDates.add(day);
                     }
-                    eventAdapter.notifyDataSetChanged();
+                    calendarView.removeDecorators();
+                    calendarView.addDecorator(new BorderDecorator(markedDates, getResources().getColor(R.color.primary_blue)));
+                },
+                error -> error.printStackTrace()
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("SessionToken", sessionToken);
+                return headers;
+            }
+        };
+        Volley.newRequestQueue(requireContext()).add(request);
+    }
+
+private void loadEvents(String date) {
+    eventList.clear();
+    String url = URL + "?date=" + date;
+
+    JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+            response -> {
+                if (response.length() == 0) {
+                    android.util.Log.d("CalendarFragment", "Respuesta vacía para fecha: " + date);
+                } else {
+                    android.util.Log.d("CalendarFragment", "Eventos recibidos para fecha: " + date + ", cantidad: " + response.length());
+                }
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject obj = response.getJSONObject(i);
+                        int id = obj.getInt("id");
+                        String type = obj.getString("type");
+                        String title = obj.getString("title");
+                        String description = obj.getString("description");
+                        String eventDate = obj.getString("date");
+
+                        eventList.add(new VetEvent(title, description, eventDate, type, id));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        android.util.Log.e("CalendarFragment", "Error parseando JSON: " + e.getMessage());
+                    }
+                }
+                eventAdapter.notifyDataSetChanged();
+            },
+            error -> {
+                error.printStackTrace();
+                Toast.makeText(getContext(), "Error cargando eventos: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                android.util.Log.e("CalendarFragment", "Error en petición volley: " + error.toString());
+            }
+    ) {
+        @Override
+        public Map<String, String> getHeaders() {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("SessionToken", sessionToken);
+            return headers;
+        }
+    };
+
+    Volley.newRequestQueue(requireContext()).add(request);
+}
+
+    public void deleteEvent(int eventId, String date) {
+        String deleteUrl = URL + eventId + "/";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, deleteUrl, null,
+                response -> {
+                    loadEvents(date);
+                    loadMarkedDates();
                 },
                 error -> error.printStackTrace()
         ) {
@@ -105,10 +183,11 @@ public class CalendarFragment extends Fragment {
         Volley.newRequestQueue(requireContext()).add(request);
     }
 
+
     private void showAddEventDialog() {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, null);
         Spinner typeSpinner = dialogView.findViewById(R.id.spinnerType);
-        EditText titleInput = dialogView.findViewById(R.id.editTitle);
+//        EditText titleInput = dialogView.findViewById(R.id.editTitle);
         EditText noteInput = dialogView.findViewById(R.id.editNote);
         Button dateButton = dialogView.findViewById(R.id.btnPickDate);
 
@@ -129,12 +208,13 @@ public class CalendarFragment extends Fragment {
                 .setView(dialogView)
                 .setPositiveButton("Guardar", (dialog, which) -> {
                     String eventType = typeSpinner.getSelectedItem().toString().toLowerCase();
-                    String title = titleInput.getText().toString();
+//                    String title = titleInput.getText().toString();
                     String note = noteInput.getText().toString();
 
                     JSONObject jsonBody = new JSONObject();
                     try {
                         jsonBody.put("type", eventType);
+//                        jsonBody.put('title', title);
                         jsonBody.put("date", selectedDate[0]);
                         jsonBody.put("description", note);
                     } catch (JSONException e) {
@@ -143,8 +223,11 @@ public class CalendarFragment extends Fragment {
                     }
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, jsonBody,
-                            response -> loadEvents(selectedDate[0]),
-                            error -> error.printStackTrace()
+                            response -> {
+                                loadEvents(selectedDate[0]);
+                                loadMarkedDates();
+                            },
+                    error -> error.printStackTrace()
                     ) {
                         @Override
                         public Map<String, String> getHeaders() {
@@ -160,6 +243,7 @@ public class CalendarFragment extends Fragment {
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
+
     private String getSessionToken() {
         SharedPreferences prefs = requireContext().getSharedPreferences("DOGPEDIA_APP_PREFS", Context.MODE_PRIVATE);
         return prefs.getString("SessionToken", null);

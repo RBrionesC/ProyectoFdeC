@@ -28,6 +28,8 @@ urlpatterns = [
     path('users/upload_avatar/', endpoint_upload_image.upload_avatar),
     path('users/profile/', endpoints_profile.profile),
     path('vetevent/', endpoints.vet_events),
+    path('vetevent/dates/', endpoints.vet_event_dates),
+    path('vetevent/<int:event_id>/', endpoints.delete_vet_event),
 
 
 ]

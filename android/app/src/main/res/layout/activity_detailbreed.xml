@@ -7,218 +7,95 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        tools:ignore="MissingConstraints"
-        android:background="#2B61A7">
+        android:background="#2B61A7"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/back" />
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/back"
+            android:contentDescription="Back"
+            android:tint="@android:color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="55dp"
+            android:layout_gravity="center"
             android:text="Details of the breed"
-            android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
-
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/ImageDog"
-        android:layout_width="350dp"
-        android:layout_height="150dp"
-        android:layout_margin="15dp"
+    <!-- ScrollView para que todo sea visible en pantallas pequeñas -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:scaleType="fitCenter"
-        />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/NameDog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        app:layout_constraintTop_toBottomOf="@id/ImageDog"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:text="Golden"
-        />
-
-    <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/NameDog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:ignore="MissingConstraints">
-
-        <!-- ID de referencia -->
-
-
-        <!-- Criado para -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="8dp">
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/ImageDog"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="16dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/NameDog"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bred for:"
+                android:layout_marginBottom="16dp"
+                android:text="Golden"
                 android:textStyle="bold"
-                android:textSize="16dp"/>
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/tvBreedFor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Caza de roedores pequeños, perro de compañía" />
+
+
+            <!-- Bred For -->
+            <TextView android:text="Bred for:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvBreedFor" style="@style/BreedValueStyle"/>
+
+            <!-- Breed Group -->
+            <TextView android:text="Breed group:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvBreedGroup" style="@style/BreedValueStyle"/>
+
+            <!-- Life Span -->
+            <TextView android:text="Life span:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvLifeSpan" style="@style/BreedValueStyle"/>
+
+            <!-- Temperament -->
+            <TextView android:text="Temperament:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvTemperament" style="@style/BreedValueStyle"/>
+
+            <!-- Origin -->
+            <TextView android:text="Origin:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvOrigin" style="@style/BreedValueStyle"/>
+
+            <!-- Height -->
+            <TextView android:text="Height:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvHeight" style="@style/BreedValueStyle"/>
+
+            <!-- Weight -->
+            <TextView android:text="Weight:" style="@style/BreedTitleStyle"/>
+            <TextView android:id="@+id/tvWeight" style="@style/BreedValueStyle"/>
+
         </LinearLayout>
-
-        <!-- Grupo de raza -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Breed_group:"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tvBreedGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Juguete" />
-        </LinearLayout>
-
-        <!-- Esperanza de vida -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Life span:"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tvLifeSpan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="10 - 12 años" />
-        </LinearLayout>
-
-        <!-- Temperamento -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Temperament:"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tvTemperament"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Terco, Curioso, Juguetón, Aventurero, Activo, Amante de la diversión" />
-        </LinearLayout>
-
-        <!-- Origen -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Origin:"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tvOrigin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Alemania, Francia" />
-        </LinearLayout>
-
-        <!-- Altura -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Height:"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tvHeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="23 - 29 cm (9 - 11.5 in)" />
-        </LinearLayout>
-
-        <!-- Peso -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Weight:"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tvWeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="3 - 6 kg (6 - 13 lb)" />
-        </LinearLayout>
-    </LinearLayout>
-
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

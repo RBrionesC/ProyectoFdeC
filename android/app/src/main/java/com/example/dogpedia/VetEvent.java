@@ -6,12 +6,20 @@ public class VetEvent {
     public String date;
     public String type;
 
-    public VetEvent(String title, String description, String date, String type) {
+    public int id;
+
+    public VetEvent(String title, String description, String date, String type, int id) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.type = type;
+        this.id = id;
     }
+
+    public int getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

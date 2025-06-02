@@ -45,6 +45,10 @@ public class DetailBreedActivity extends AppCompatActivity {
         tvOrigin = findViewById(R.id.tvOrigin);
         tvHeight = findViewById(R.id.tvHeight);
         tvWeight = findViewById(R.id.tvWeight);
+
+        ImageView btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener( v -> finish());
+
         String referenceId = getIntent().getStringExtra("reference_id");
 
         if (referenceId != null && !referenceId.isEmpty()) {

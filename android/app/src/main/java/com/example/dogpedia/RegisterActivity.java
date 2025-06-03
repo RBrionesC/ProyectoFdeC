@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d(TAG, "Enviando petición a: " + url);
+        Log.d(TAG, "Sending request to: " + url);
         Log.d(TAG, "Body: " + requestBody.toString());
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 response -> {
                     progressDialog.dismiss();
                     try {
-                        Log.d(TAG, "Respuesta del servidor: " + response.toString());
+                        Log.d(TAG, "Server response: " + response.toString());
                         SharedPreferences prefs = getSharedPreferences("DOGPEDIA_APP_PREFS", MODE_PRIVATE);
                         prefs.edit().putString("EMAIL", requestBody.getString("email")).apply();
                         prefs.edit().putString("NAME", requestBody.getString("name")).apply();
@@ -91,13 +91,13 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } catch (JSONException e) {
-                        Log.e(TAG, "Error procesando la respuesta", e);
+                        Log.e(TAG, "Error processing response", e);
                         Toast.makeText(this, "Server response failed", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
                     progressDialog.dismiss();
-                    String errorMsg = "Error en la solicitud: ";
+                    String errorMsg = "Error in the request: ";
                     if (error.networkResponse != null && error.networkResponse.data != null) {
                         errorMsg += new String(error.networkResponse.data);
                     } else {
@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
             Log.d(TAG, "Request body: " + body);
             return body;
         } catch (JSONException e) {
-            Log.e(TAG, "Error creando JSON", e);
+            Log.e(TAG, "Error creating JSON", e);
             Toast.makeText(this, "Error processing data", Toast.LENGTH_SHORT).show();
             return null;
         }

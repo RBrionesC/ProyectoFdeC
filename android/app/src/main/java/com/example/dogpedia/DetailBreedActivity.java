@@ -54,7 +54,7 @@ public class DetailBreedActivity extends AppCompatActivity {
         if (referenceId != null && !referenceId.isEmpty()) {
             obtainDataBreeds(referenceId);
         } else {
-            Toast.makeText(this, "No se pudo obtener la información de la raza", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Could not obtain breed information", Toast.LENGTH_SHORT).show();
         }
 
         progressDialog = new ProgressDialog(this);
@@ -102,12 +102,12 @@ public class DetailBreedActivity extends AppCompatActivity {
                 }
             }catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Error al procesar la información", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error processing information", Toast.LENGTH_SHORT).show();
             }
                 },
                 error -> {
             error.printStackTrace();
-                    Toast.makeText(this, "Error al obtener datos de la API", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error getting data from the API", Toast.LENGTH_SHORT).show();
                 }
         );
         Volley.newRequestQueue(this).add(request);

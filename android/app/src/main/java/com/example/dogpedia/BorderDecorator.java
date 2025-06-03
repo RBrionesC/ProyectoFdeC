@@ -7,7 +7,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class BorderDecorator implements DayViewDecorator {

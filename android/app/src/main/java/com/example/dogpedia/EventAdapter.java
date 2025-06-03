@@ -1,17 +1,13 @@
 package com.example.dogpedia;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
@@ -41,9 +37,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.noteText.setText(event.getDescription());
         holder.deleteButton.setOnClickListener(v -> {
             new AlertDialog.Builder(v.getContext())
-                    .setTitle("Eliminar Evento")
-                    .setMessage("¿Estás seguro de que quieres eliminar este evento?")
-                    .setPositiveButton("Sí", (dialog, which) -> {
+                    .setTitle("Delete event")
+                    .setMessage("Are you sure you want to delete this event?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
                         deleteListener.onEventDelete(event.getId(), event.getDate());
                     })
                     .setNegativeButton("No", null)
@@ -55,14 +51,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     private String getReadableType(String type) {
         switch (type) {
-            case "vacunación":
-                return "Vacunación";
-            case "desparasitacion":
-                return "Desparasitación";
-            case "visita":
-                return "Visita al veterinario";
+            case "vaccination":
+                return "Vaccination";
+            case "deworming":
+                return "Deworming";
+            case "visit":
+                return "Visit to the vet";
             default:
-                return "Otro";
+                return "Other";
         }
     }
 

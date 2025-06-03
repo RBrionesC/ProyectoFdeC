@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from api import endpoints, endpoint_upload_image, endpoints_profile
+from api import endpoints, endpoint_upload_image, endpoints_profile, endpoinst_vet_events
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,9 +27,9 @@ urlpatterns = [
     path('sessions/', endpoints.login),
     path('users/upload_avatar/', endpoint_upload_image.upload_avatar),
     path('users/profile/', endpoints_profile.profile),
-    path('vetevent/', endpoints.vet_events),
-    path('vetevent/dates/', endpoints.vet_event_dates),
-    path('vetevent/<int:event_id>/', endpoints.delete_vet_event),
+    path('vetevent/', endpoinst_vet_events.vet_events),
+    path('vetevent/dates/', endpoinst_vet_events.vet_event_dates),
+    path('vetevent/<int:event_id>/', endpoinst_vet_events.delete_vet_event),
 
 
 ]

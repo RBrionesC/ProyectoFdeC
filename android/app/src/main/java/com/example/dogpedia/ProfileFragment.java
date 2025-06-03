@@ -148,7 +148,7 @@ public class ProfileFragment extends Fragment {
     private void openImageChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        imagePickerLauncher.launch(Intent.createChooser(intent, "Selecciona una imagen"));
+        imagePickerLauncher.launch(Intent.createChooser(intent, "Select an image"));
     }
 
 

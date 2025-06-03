@@ -4,7 +4,6 @@ package com.example.dogpedia;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,20 +25,25 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormatSymbols;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
+
 
 public class CalendarFragment extends Fragment implements OnEventDeleteListener {
     private MaterialCalendarView calendarView;
@@ -66,6 +70,10 @@ public class CalendarFragment extends Fragment implements OnEventDeleteListener 
         eventsRecyclerView = view.findViewById(R.id.eventsRV);
         addEventButton = view.findViewById(R.id.AddEvent);
 
+        //Asignamos formateadores para que el calendario esté en inglés
+        calendarView.setTitleFormatter(new EnglishTitleFormatter());
+        calendarView.setWeekDayFormatter(new EnglishWeekDayFormatter());
+
         eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         eventAdapter = new EventAdapter(eventList, this);
         eventsRecyclerView.setAdapter(eventAdapter);
@@ -84,6 +92,24 @@ public class CalendarFragment extends Fragment implements OnEventDeleteListener 
         });
 
         return view;
+    }
+
+    // Formatter para título (Mes Año) en inglés
+    private static class EnglishTitleFormatter implements TitleFormatter {
+        @Override
+        public CharSequence format(CalendarDay day) {
+            String month = new DateFormatSymbols(Locale.ENGLISH).getMonths()[day.getMonth()];
+            int year = day.getYear();
+            return month + " " + year;
+        }
+    }
+
+    // Formatter para días de la semana abreviados en inglés
+    private static class EnglishWeekDayFormatter implements WeekDayFormatter {
+        @Override
+        public CharSequence format(int dayOfWeek) {
+            return new DateFormatSymbols(Locale.ENGLISH).getShortWeekdays()[dayOfWeek];
+        }
     }
 
     private void loadMarkedDates() {
@@ -116,51 +142,51 @@ public class CalendarFragment extends Fragment implements OnEventDeleteListener 
         Volley.newRequestQueue(requireContext()).add(request);
     }
 
-private void loadEvents(String date) {
-    eventList.clear();
-    String url = URL + "?date=" + date;
+    private void loadEvents(String date) {
+        eventList.clear();
+        String url = URL + "?date=" + date;
 
-    JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-            response -> {
-                if (response.length() == 0) {
-                    android.util.Log.d("CalendarFragment", "Respuesta vacía para fecha: " + date);
-                } else {
-                    android.util.Log.d("CalendarFragment", "Eventos recibidos para fecha: " + date + ", cantidad: " + response.length());
-                }
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject obj = response.getJSONObject(i);
-                        int id = obj.getInt("id");
-                        String type = obj.getString("type");
-                        String title = obj.getString("title");
-                        String description = obj.getString("description");
-                        String eventDate = obj.getString("date");
-
-                        eventList.add(new VetEvent(title, description, eventDate, type, id));
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        android.util.Log.e("CalendarFragment", "Error parseando JSON: " + e.getMessage());
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    if (response.length() == 0) {
+                        android.util.Log.d("CalendarFragment", "Empty response for date: " + date);
+                    } else {
+                        android.util.Log.d("CalendarFragment", "Events received for date: " + date + ", amount : " + response.length());
                     }
-                }
-                eventAdapter.notifyDataSetChanged();
-            },
-            error -> {
-                error.printStackTrace();
-                Toast.makeText(getContext(), "Error cargando eventos: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                android.util.Log.e("CalendarFragment", "Error en petición volley: " + error.toString());
-            }
-    ) {
-        @Override
-        public Map<String, String> getHeaders() {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("SessionToken", sessionToken);
-            return headers;
-        }
-    };
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject obj = response.getJSONObject(i);
+                            int id = obj.getInt("id");
+                            String type = obj.getString("type");
+                            String title = obj.getString("title");
+                            String description = obj.getString("description");
+                            String eventDate = obj.getString("date");
 
-    Volley.newRequestQueue(requireContext()).add(request);
-}
+                            eventList.add(new VetEvent(title, description, eventDate, type, id));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            android.util.Log.e("CalendarFragment", "Error parsing JSON: " + e.getMessage());
+                        }
+                    }
+                    eventAdapter.notifyDataSetChanged();
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(getContext(), "Error cargando eventos: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    android.util.Log.e("CalendarFragment", "Error in request volley: " + error.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("SessionToken", sessionToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(requireContext()).add(request);
+    }
 
     public void deleteEvent(int eventId, String date) {
         String deleteUrl = URL + eventId + "/";
@@ -187,7 +213,6 @@ private void loadEvents(String date) {
     private void showAddEventDialog() {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, null);
         Spinner typeSpinner = dialogView.findViewById(R.id.spinnerType);
-//        EditText titleInput = dialogView.findViewById(R.id.editTitle);
         EditText noteInput = dialogView.findViewById(R.id.editNote);
         Button dateButton = dialogView.findViewById(R.id.btnPickDate);
 
@@ -195,7 +220,7 @@ private void loadEvents(String date) {
         dateButton.setText(selectedDate[0]);
 
         dateButton.setOnClickListener(v -> {
-            MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Seleccionar fecha").build();
+            MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select date").build();
             datePicker.show(getParentFragmentManager(), "DATE_PICKER");
             datePicker.addOnPositiveButtonClickListener(selection -> {
                 selectedDate[0] = Instant.ofEpochMilli(selection).atZone(ZoneId.systemDefault()).toLocalDate().toString();
@@ -204,17 +229,15 @@ private void loadEvents(String date) {
         });
 
         new AlertDialog.Builder(getContext())
-                .setTitle("Agregar Evento Veterinario")
+                .setTitle("Add Veterinary Event")
                 .setView(dialogView)
-                .setPositiveButton("Guardar", (dialog, which) -> {
+                .setPositiveButton("Save event", (dialog, which) -> {
                     String eventType = typeSpinner.getSelectedItem().toString().toLowerCase();
-//                    String title = titleInput.getText().toString();
                     String note = noteInput.getText().toString();
 
                     JSONObject jsonBody = new JSONObject();
                     try {
                         jsonBody.put("type", eventType);
-//                        jsonBody.put('title', title);
                         jsonBody.put("date", selectedDate[0]);
                         jsonBody.put("description", note);
                     } catch (JSONException e) {
@@ -227,7 +250,7 @@ private void loadEvents(String date) {
                                 loadEvents(selectedDate[0]);
                                 loadMarkedDates();
                             },
-                    error -> error.printStackTrace()
+                            error -> error.printStackTrace()
                     ) {
                         @Override
                         public Map<String, String> getHeaders() {
@@ -240,7 +263,7 @@ private void loadEvents(String date) {
 
                     Volley.newRequestQueue(requireContext()).add(request);
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton("Cancel", null)
                 .show();
     }
 

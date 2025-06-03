@@ -1,15 +1,24 @@
 package com.example.dogpedia;
 
-import android.content.Intent;
+
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,25 +28,35 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private DogBreedAdapter adapter;
     private ArrayList<Breed> dogBreed = new ArrayList<>();
-
+    private List<Breed> breedList = new ArrayList<>();
     private RequestQueue queue;
-
-    private static final int NUMBER_OF_DOGS = 6; // Límite de razas que se ven.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            activity.setSupportActionBar(toolbar);
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+
+        int spanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2;
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
+        recyclerView.setLayoutManager(layoutManager);
+
         adapter = new DogBreedAdapter(getContext(),dogBreed);
         adapter.setOnItemClickListener(breed -> {
-            //definimos lo que hacemos cuando se haga clic en una raza de perro
 
         });
 
@@ -49,6 +68,14 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
     private void loadBreedDogs() {
         String url = "https://api.thedogapi.com/v1/breeds";
 
@@ -56,6 +83,7 @@ public class HomeFragment extends Fragment {
                 url,
                 null,
                 response -> {
+                    dogBreed.clear();
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject breedJson = response.getJSONObject(i);
@@ -78,10 +106,40 @@ public class HomeFragment extends Fragment {
 
 
                     }
+                    adapter.updateFullList(new ArrayList<>(dogBreed));
                     adapter.notifyDataSetChanged();
+
                 },
                 error -> error.printStackTrace()
         );
         queue.add(request);
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search breed...");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; // Oculta teclado si quieres
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("HomeFragment", "Search text changed: " + newText);
+                if (adapter != null) {
+                    adapter.getFilter().filter(newText);
+                }
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 }

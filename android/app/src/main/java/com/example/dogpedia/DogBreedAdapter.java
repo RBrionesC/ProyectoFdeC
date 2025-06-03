@@ -2,10 +2,13 @@ package com.example.dogpedia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,17 +17,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.BreedViewHolder> {
+public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.BreedViewHolder>implements Filterable {
 
     private List<Breed> breedList;
+    private List<Breed> breedListFull;
     private OnItemClickListener listener;
     private Context context;
 
     public DogBreedAdapter(Context context,List<Breed> breedList){
         this.context = context;
         this.breedList = breedList;
+        this.breedListFull = new ArrayList<>(breedList);
 
     }
 
@@ -75,4 +81,46 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.BreedV
             textView = itemView.findViewById(R.id.textViewName);
         }
     }
+    @Override
+    public Filter getFilter() {
+        return breedFilter;
+    }
+
+    private Filter breedFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Breed> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(breedListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Breed item : breedListFull) {
+                    if (item.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            breedList.clear();
+            breedList.addAll((List) results.values);
+            Log.d("DogBreedAdapter", "Filtered list size: " + breedList.size());
+            notifyDataSetChanged();
+        }
+    };
+
+    public void updateFullList(List<Breed> newFullList) {
+        breedListFull.clear();
+        breedListFull.addAll(newFullList);
+    }
+
+
 }

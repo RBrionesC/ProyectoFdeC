@@ -23,9 +23,9 @@ class Session(models.Model):
 
 class VetEvent(models.Model):
     EVENT_TYPES = [
-        ('vacunacion', 'Vacunación'),
-        ('desparasitacion', 'Desparasitación'),
-        ('visita', 'Visita al veterinario'),
+        ('vaccination', 'Vaccination'),
+        ('deworming', 'Deworming'),
+        ('visit', 'Visit to the vet'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

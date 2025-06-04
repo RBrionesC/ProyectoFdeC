@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
     <color name="primary_blue">#2B61A7</color>
+    <color name="primary_blue_variant">#1E4B87</color>
+
+    <color name="calendar_selection_color">#2B61A7</color>
+    <color name="calendar_background_color">#FFFFFF</color>
+    <color name="calendar_text_color">#000000</color>
+    <color name="calendar_disabled_text_color">#A0A0A0</color>
 
 </resources>

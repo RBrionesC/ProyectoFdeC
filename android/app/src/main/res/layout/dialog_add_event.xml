@@ -4,12 +4,6 @@
     android:padding="16dp"
     android:layout_height="wrap_content">
 
-<!--    <EditText-->
-<!--        android:id="@+id/editTitle"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Título del evento" />-->
-
     <Spinner
         android:id="@+id/spinnerType"
         android:layout_width="match_parent"
@@ -20,11 +14,11 @@
         android:id="@+id/editNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Descripción o nota" />
+        android:hint="Description or note" />
 
     <Button
         android:id="@+id/btnPickDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Seleccionar fecha" />
+        android:text="Select date" />
 </LinearLayout>

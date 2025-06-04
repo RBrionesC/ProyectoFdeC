@@ -7,16 +7,27 @@
 
     <fragment
         android:id="@id/page_home"
-        android:name="com.example.dogpedia.HomeFragment"
-        tools:layout="@layout/fragment_home"/>
+        android:name="com.example.dogpedia.fragments.HomeFragment"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@id/page_profile"
-        android:name="com.example.dogpedia.ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
+        android:name="com.example.dogpedia.fragments.ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+        <!-- Acción para ir a SettingsFragment -->
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/page_settings" />
+    </fragment>
 
     <fragment
         android:id="@id/page_calendar"
-        android:name="com.example.dogpedia.CalendarFragment"
-        tools:layout="@layout/fragment_calendar"/>
+        android:name="com.example.dogpedia.fragments.CalendarFragment"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/page_settings"
+        android:name="com.example.dogpedia.fragments.SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

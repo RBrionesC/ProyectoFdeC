@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.fragments;
 
 
 import android.app.AlertDialog;
@@ -21,6 +21,11 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dogpedia.utils.BorderDecorator;
+import com.example.dogpedia.adapters.EventAdapter;
+import com.example.dogpedia.utils.OnEventDeleteListener;
+import com.example.dogpedia.R;
+import com.example.dogpedia.models.VetEvent;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -67,6 +72,9 @@ public class CalendarFragment extends Fragment implements OnEventDeleteListener 
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         calendarView = view.findViewById(R.id.materialCalendarView);
+        calendarView.setDateTextAppearance(R.style.CalendarDateTextAppearance);
+        calendarView.setWeekDayTextAppearance(R.style.CalendarWeekDayTextAppearance);
+
         eventsRecyclerView = view.findViewById(R.id.eventsRV);
         addEventButton = view.findViewById(R.id.AddEvent);
 

@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.adapters;
 
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -8,6 +8,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.dogpedia.utils.OnEventDeleteListener;
+import com.example.dogpedia.R;
+import com.example.dogpedia.models.VetEvent;
+
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {

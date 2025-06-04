@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.models;
 
 public class Breed {
     private String name;

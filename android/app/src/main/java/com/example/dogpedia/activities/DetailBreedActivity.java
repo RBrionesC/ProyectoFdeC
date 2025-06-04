@@ -1,6 +1,4 @@
-package com.example.dogpedia;
-
-import static java.security.AccessController.getContext;
+package com.example.dogpedia.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -15,6 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.dogpedia.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +33,7 @@ public class DetailBreedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailbreed);
+        setContentView(R.layout.activity_detail_breed);
 
         imageDog = findViewById(R.id.ImageDog);
         nameDog = findViewById(R.id.NameDog);

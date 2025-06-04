@@ -1,8 +1,5 @@
-package com.example.dogpedia;
+package com.example.dogpedia.fragments;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,11 +22,15 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dogpedia.activities.LoginActivity;
+import com.example.dogpedia.R;
 
 import org.json.JSONObject;
 
@@ -46,6 +47,7 @@ public class ProfileFragment extends Fragment {
     private ImageView ivProfile;
     private EditText etDogName, etBirthdate, etBreed, etWeight;
     private Button btnEdit, btnSave;
+    private ImageButton btnSettings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class ProfileFragment extends Fragment {
         etWeight = view.findViewById(R.id.etWeight);
         btnEdit = view.findViewById(R.id.Edit);
         btnSave = view.findViewById(R.id.Save);
+        btnSettings = view.findViewById(R.id.Btnsettings);
 
         TextView name = view.findViewById(R.id.ivName);
         name.setText(getContext().getSharedPreferences("DOGPEDIA_APP_PREFS", Context.MODE_PRIVATE).getString("NAME", null));
@@ -139,6 +142,10 @@ public class ProfileFragment extends Fragment {
                 }
         );
 
+        btnSettings.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_hostfragment);
+            navController.navigate(R.id.action_profile_to_settings);
+        });
 
         return view;
 

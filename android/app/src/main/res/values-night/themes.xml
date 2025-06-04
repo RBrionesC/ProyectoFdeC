@@ -1,7 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Dogpedia" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Theme.DogPedia" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorPrimaryVariant">@color/primary_blue_variant</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="colorBackground">@color/black</item>
+        <item name="colorOnBackground">@color/white</item>
+
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 </resources>

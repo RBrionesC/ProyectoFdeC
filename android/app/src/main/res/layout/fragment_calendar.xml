@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+    android:background="?attr/colorBackground"
     tools:context=".ui.calendar.CalendarFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarCal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#2B61A7"
+        android:background="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="20dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/titleText"
@@ -23,7 +26,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Veterinary Calendar"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
@@ -40,7 +43,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:paddingBottom="80dp">
 
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -52,8 +55,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:mcv_selectionColor="#2B61A7"
+                app:mcv_dateTextAppearance="@style/CalendarDateTextAppearance"
+                app:mcv_weekDayTextAppearance="@style/CalendarWeekDayTextAppearance"
+                app:mcv_selectionColor="@color/calendar_selection_color"
                 app:mcv_showOtherDates="all" />
+
+
 
             <TextView
                 android:id="@+id/eventsTitle"
@@ -62,7 +69,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Events of the day"
-                android:textColor="#2B61A7"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -89,11 +96,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="#2B61A7"
+        android:backgroundTint="?attr/colorPrimary"
         android:contentDescription="Add event"
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
+        app:tint="?attr/colorOnPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

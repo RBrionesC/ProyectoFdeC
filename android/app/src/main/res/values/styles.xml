@@ -14,4 +14,20 @@
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:layout_marginStart">8dp</item>
     </style>
+
+
+    <!-- Estilo para los días del calendario -->
+    <style name="CalendarDateTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <!-- Estilo para los nombres de los días (Lun, Mar, etc.) -->
+    <style name="CalendarWeekDayTextAppearance" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+
+
+
+
 </resources>

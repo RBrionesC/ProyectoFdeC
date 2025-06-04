@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import com.android.volley.RequestQueue;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dogpedia.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

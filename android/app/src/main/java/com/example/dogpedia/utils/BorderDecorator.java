@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.utils;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.style.LineBackgroundSpan;

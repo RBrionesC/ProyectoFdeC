@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorPrimaryVariant" format="color" />
+    <attr name="colorOnPrimary" format="color" />
+    <attr name="colorBackground" format="color" />
+    <attr name="colorOnBackground" format="color" />
+    <attr name="colorSurface" format="color" />
+    <attr name="colorOnSurface" format="color" />
+
+    <attr name="calendarSelectionColor" format="color" />
+    <attr name="calendarBackgroundColor" format="color" />
+    <attr name="calendarTextColor" format="color" />
+    <attr name="calendarDisabledTextColor" format="color" />
+</resources>

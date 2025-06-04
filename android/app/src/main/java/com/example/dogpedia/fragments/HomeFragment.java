@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.fragments;
 
 
 import android.content.res.Configuration;
@@ -24,6 +24,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dogpedia.models.Breed;
+import com.example.dogpedia.adapters.DogBreedAdapter;
+import com.example.dogpedia.R;
 
 import org.json.JSONObject;
 
@@ -126,7 +129,7 @@ public class HomeFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false; // Oculta teclado si quieres
+                return false;
             }
 
             @Override

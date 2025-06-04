@@ -5,15 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="?attr/colorBackground">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2B61A7"
+        android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,7 +23,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Profile"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -32,6 +34,14 @@
             android:background="@drawable/logout"
             android:layout_gravity="end"
             android:layout_marginEnd="15dp"/>
+
+        <ImageButton
+            android:id="@+id/Btnsettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/settings"
+            android:layout_gravity="start"
+            android:layout_marginStart="15dp"/>
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -77,6 +87,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:text="NAME"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="30dp"
                 android:textStyle="bold" />
 
@@ -88,6 +99,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Email@gmail.com"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="15dp" />
 
             <com.google.android.material.card.MaterialCardView
@@ -97,9 +109,9 @@
                 android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp"
-                app:strokeColor="#000000"
+                app:strokeColor="?attr/colorOnBackground"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="#F9F9F9">
+                app:cardBackgroundColor="?attr/colorSurface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,7 +135,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Dog's name"
-                            android:textColor="#000000"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -132,8 +144,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="name"
-                            android:textColorHint="@color/black"
-                            android:textColor="#000000"
+                            android:textColorHint="?attr/colorOnBackground"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="16sp"
                             android:background="@null"
                             android:enabled="false" />
@@ -141,7 +153,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Repite lo mismo para los demás cards -->
+            <!-- Lo mismo para los otros cards -->
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/Birthdate"
@@ -150,9 +162,9 @@
                 android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp"
-                app:strokeColor="#000000"
+                app:strokeColor="?attr/colorOnBackground"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="#F9F9F9">
+                app:cardBackgroundColor="?attr/colorSurface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,7 +188,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Birthdate"
-                            android:textColor="#000000"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -185,9 +197,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="yyyy-mm-dd"
-                            android:textColorHint="@color/black"
+                            android:textColorHint="?attr/colorOnBackground"
                             android:inputType="date"
-                            android:textColor="#000000"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="16sp"
                             android:background="@null"
                             android:enabled="false" />
@@ -202,9 +214,9 @@
                 android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp"
-                app:strokeColor="#000000"
+                app:strokeColor="?attr/colorOnBackground"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="#F9F9F9">
+                app:cardBackgroundColor="?attr/colorSurface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -228,7 +240,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Breed"
-                            android:textColor="#000000"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -237,8 +249,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="breed"
-                            android:textColorHint="@color/black"
-                            android:textColor="#000000"
+                            android:textColorHint="?attr/colorOnBackground"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="16sp"
                             android:background="@null"
                             android:enabled="false" />
@@ -253,9 +265,9 @@
                 android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp"
-                app:strokeColor="#000000"
+                app:strokeColor="?attr/colorOnBackground"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="#F9F9F9">
+                app:cardBackgroundColor="?attr/colorSurface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -279,7 +291,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Weight"
-                            android:textColor="#000000"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -289,8 +301,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
                             android:hint="0"
-                            android:textColorHint="@color/black"
-                            android:textColor="#000000"
+                            android:textColorHint="?attr/colorOnBackground"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="16sp"
                             android:background="@null"
                             android:enabled="false" />
@@ -303,7 +315,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Edit profile"
-                android:backgroundTint="#2B61A7"
+                android:backgroundTint="?attr/colorPrimary"
                 android:layout_marginTop="10dp"/>
 
             <Button
@@ -311,7 +323,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save changes"
-                android:backgroundTint="#2B61A7"
+                android:backgroundTint="?attr/colorPrimary"
                 android:layout_marginTop="5dp" />
 
         </LinearLayout>

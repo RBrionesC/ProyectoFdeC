@@ -1,4 +1,4 @@
-package com.example.dogpedia;
+package com.example.dogpedia.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -16,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.dogpedia.models.Breed;
+import com.example.dogpedia.R;
+import com.example.dogpedia.activities.DetailBreedActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.BreedV
     @NonNull
     @Override
     public BreedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dog_breed_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dog_breed, parent, false);
         return new BreedViewHolder(view);
     }
 

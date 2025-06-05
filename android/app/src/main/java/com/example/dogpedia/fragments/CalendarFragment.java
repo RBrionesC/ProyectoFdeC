@@ -181,7 +181,7 @@ public class CalendarFragment extends Fragment implements OnEventDeleteListener 
                 },
                 error -> {
                     error.printStackTrace();
-                    Toast.makeText(getContext(), "Error cargando eventos: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Error loading events: " + error.getMessage(), Toast.LENGTH_LONG).show();
                     android.util.Log.e("CalendarFragment", "Error in request volley: " + error.toString());
                 }
         ) {

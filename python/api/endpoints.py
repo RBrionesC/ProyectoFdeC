@@ -2,7 +2,6 @@ import json
 import secrets
 import bcrypt
 from django.db import IntegrityError
-from django.views.decorators.http import require_http_methods
 
 from api.models import User, Session, VetEvent
 from django.http import JsonResponse

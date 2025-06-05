@@ -92,19 +92,24 @@ def vet_event_dates(request):
 
 
 @csrf_exempt
-@require_http_methods(["DELETE"])
 def delete_vet_event(request, event_id):
-    token = request.headers.get('SessionToken')
-    if not token:
-        return JsonResponse({'error': 'Missing token'}, status=401)
+    session_token = request.headers.get('SessionToken')
+    if not session_token:
+        return JsonResponse({'error': 'Missing token in header'}, status=403)
 
     try:
-        session = Session.objects.get(token=token)
-        user = session.user
-        event = VetEvent.objects.get(id=event_id, user=user)
-        event.delete()
-        return JsonResponse({'message': 'Event deleted'}, status=200)
+        session = Session.objects.get(token=session_token)
     except Session.DoesNotExist:
-        return JsonResponse({'error': 'Invalid token'}, status=403)
-    except VetEvent.DoesNotExist:
-        return JsonResponse({'error': 'Event not found'}, status=404)
+        return JsonResponse({'error': 'Invalid Token'}, status=403)
+
+    user = session.user
+
+    if request.method == 'DELETE':
+        try:
+            event = VetEvent.objects.get(id=event_id, user=user)
+            event.delete()
+            return JsonResponse({'message': 'Event deleted'}, status=200)
+        except VetEvent.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+    else:
+        return JsonResponse({'error': 'HTTP method not supported'}, status=405)

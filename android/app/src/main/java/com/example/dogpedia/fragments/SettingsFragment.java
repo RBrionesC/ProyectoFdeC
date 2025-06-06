@@ -78,7 +78,6 @@ public class SettingsFragment extends Fragment {
             if (!newPass.equals(confirm)) {
                 Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             } else {
-                // Aquí puedes enviar la solicitud a tu backend (Django) para cambiar la contraseña
                 changePasswordInBackend(current, newPass);
             }
         });
